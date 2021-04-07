@@ -2,13 +2,21 @@
 #define _LEENTRADAS_H_
 
 #include "graphOperations.h"
+#include "../headers/linkedList.h"
+
 
 Grafo* inicializaGrafo();
 
 
-void allocVE(FILE* entry, int* Firstline);
+void getLineData(FILE* entry, int* dataArray, int nTokens);
 
 
 int** allocAdjMatrix(int nV);
+
+
+void getnNodes(FILE* entry, int *servitorsArray, int nS);
+
+
+void allocAdjList(FILE* entry, int E, List* nodeList);
 
 #endif
