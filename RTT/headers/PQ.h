@@ -14,6 +14,7 @@ typedef struct pq
 
 PQ* PQ_init(int maxN); // cria uma min PQ* com capacidade maxN
 void PQ_insert(Item v, PQ* pqStruct);   // Insere Item na PQ*. A maior prioridade é a do Item com menor campo 'value'
+int PQ_hasX(int x, PQ* pqStruct);
 Item PQ_delmin(PQ* pqStruct);       // Remove Item com menor campo 'value' da PQ*
 void PQ_decrease_key(int id, double value, PQ* pqStruct); // Muda a prioridade do nó com identificador 'id' para 'value'
 Item PQ_min(PQ* pqStruct);          // Retorna Item com menor campo 'value' da PQ*

@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "headers/PQ.h"
+#include <string.h>
+
+#include "../headers/PQ.h"
 
 
 static void swap(int i, int j, PQ* pqStruct) {
@@ -34,8 +36,14 @@ PQ* PQ_init(int maxN) {
     PQ* pqStruct = malloc(sizeof(PQ));
     pqStruct->pq = (Item *) malloc((maxN+1) * sizeof (Item));
     pqStruct->map = (int *) malloc((maxN+1) * sizeof (int));
+    pqStruct->map = memset(pqStruct->map, -1, sizeof(int)*maxN+1);
     pqStruct->N = 0;
     return pqStruct;
+}
+
+int PQ_hasX(int x, PQ* pqStruct)
+{
+    return (pqStruct->map[x] != -1);
 }
 
 void PQ_insert(Item v, PQ* pqStruct) {
