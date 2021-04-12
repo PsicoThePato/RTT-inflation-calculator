@@ -12,6 +12,9 @@ void destroiGrafo(Grafo* grafo)
     {
         destroyList(&grafo->adjList[i]);
     }
+    free(grafo->clients);
+    free(grafo->monitores);
+    free(grafo->servidores);
     free(grafo->adjList);
     free(grafo);
 }
