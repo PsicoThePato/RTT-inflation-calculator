@@ -3,6 +3,7 @@
 
 #include "graphOperations.h"
 #include "../headers/linkedList.h"
+#include "item.h"
 
 
 Grafo* inicializaGrafo();
@@ -18,5 +19,11 @@ void getnNodes(FILE* entry, int *servitorsArray, int nS);
 
 
 void allocAdjList(FILE* entry, int E, List* nodeList);
+
+
+void update_rtt_array_values(Grafo* graph, Item* real_rtt_calc, int* src_nodes, int* to_nodes, int src_delim, int to_delim);
+
+
+Item* rtt_calc(Grafo* graph);
 
 #endif

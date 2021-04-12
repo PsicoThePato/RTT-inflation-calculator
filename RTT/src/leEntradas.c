@@ -25,9 +25,10 @@ Grafo* inicializaGrafo()
     graph->nV = firstLine[0];
     int nE = firstLine[1];
     
-    int servitors[graph->nS];
-    int clients[graph->nC];
-    int monitors[graph->nM];
+    int *servitors = malloc(graph->nS * sizeof(int));
+    int *clients = malloc(graph->nC * sizeof(int));
+    int *monitors = malloc(graph->nM * sizeof(int));
+    
     getnNodes(entry, servitors, graph->nS);
     getnNodes(entry, clients, graph->nC);
     getnNodes(entry, monitors, graph->nM);
@@ -120,15 +121,41 @@ void allocAdjList(FILE* entry, int E, List* nodeList)
 }
 
 
+void update_rtt_array_values(Grafo* graph, Item* real_rtt_calc, int* src_nodes, int* to_nodes, int src_delim, int to_delim)
+{
+    for(int i = 0; i < src_delim; i++)
+    {
+        Item* edgeTo = dijkstraSP(graph, src_nodes[i]);
+        printf("(%d, %d, %lf)\n", edgeTo[i].id, i, edgeTo[i].value);
+        for(int j=0; j<to_delim; j++)
+        {
+            real_rtt_calc[i + j].id = to_nodes[j];
+            real_rtt_calc[i + j].value += edgeTo[to_nodes[j]].value;
+        }
+        free(edgeTo);
+    }
+}
+
+
+Item* rtt_calc(Grafo* graph)
+{
+    Item* real_rtt_calc = calloc(graph->nS * graph->nC, sizeof(Item));
+    update_rtt_array_values(graph, real_rtt_calc, graph->clients, graph->servidores, graph->nC, graph->nS);
+    update_rtt_array_values(graph, real_rtt_calc, graph->servidores, graph->clients, graph->nS, graph->nC);
+    return real_rtt_calc;
+}
+
 int main()
 {
     Grafo* graph = inicializaGrafo();
-    //assertCarregueiCerto(graph);
-    Item* edgeTo = dijkstraSP(graph, 0);
-    for(int i = 0; i < graph->nV; i++)
+    //Item* edgeTo = dijkstraSP(graph, 0);
+    printf("Servidor fora da func %d\n", graph->servidores[0]);
+    Item* real_rtt_calc = rtt_calc(graph);
+    for(int i=0; i<graph->nC * graph ->nS;i++)
     {
-        printf("(%d, %d, %lf)\n", edgeTo[i].id, i, edgeTo[i].value);
+        printf("A distancia para o node %d eh %lf\n", real_rtt_calc[i].id, real_rtt_calc[i].value);
     }
-    free(edgeTo);
+    free(real_rtt_calc);
+    //free(edgeTo);
     destroiGrafo(graph);
 }
