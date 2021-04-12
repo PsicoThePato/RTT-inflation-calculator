@@ -6,6 +6,7 @@
 #include "../headers/error.h"
 #include "../headers/dijkstra.h"
 #include "../headers/item.h"
+#include "../headers/linkedList.h"
 
 
 Grafo* inicializaGrafo()
@@ -35,6 +36,10 @@ Grafo* inicializaGrafo()
     graph->monitores = monitors;
 
     List* nodeList = malloc(sizeof(List) * graph->nV);
+    for(int i=0; i<graph->nV; i++)
+    {
+        newList(&nodeList[i]);
+    }
     allocAdjList(entry, nE, nodeList);
     fclose(entry);
 
@@ -118,7 +123,7 @@ void allocAdjList(FILE* entry, int E, List* nodeList)
 int main()
 {
     Grafo* graph = inicializaGrafo();
-    assertCarregueiCerto(graph);
+    //assertCarregueiCerto(graph);
     Item* edgeTo = dijkstraSP(graph, 0);
     for(int i = 0; i < graph->nV; i++)
     {
