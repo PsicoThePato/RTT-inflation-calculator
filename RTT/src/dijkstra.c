@@ -27,7 +27,7 @@ void relax(Node* edge, PQ* pq, int from, double* distTo, Item* edgeTo)
 
 Item* dijkstraSP(Grafo* grafo, int source)
 {
-    Item *edgeTo = malloc(sizeof(Item) * grafo->nV);
+    Item *edgeTo = calloc(grafo->nV, sizeof(Item));  //calloc to please valgrind-sama
     double distTo[grafo->nV];
     PQ* pq = PQ_init(grafo->nV);
 
