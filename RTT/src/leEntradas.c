@@ -28,7 +28,7 @@ Grafo* inicializaGrafo()
     int *servitors = malloc(graph->nS * sizeof(int));
     int *clients = malloc(graph->nC * sizeof(int));
     int *monitors = malloc(graph->nM * sizeof(int));
-    
+
     getnNodes(entry, servitors, graph->nS);
     getnNodes(entry, clients, graph->nC);
     getnNodes(entry, monitors, graph->nM);
@@ -126,7 +126,6 @@ void update_rtt_array_values(Grafo* graph, Item* real_rtt_calc, int* src_nodes, 
     for(int i = 0; i < src_delim; i++)
     {
         Item* edgeTo = dijkstraSP(graph, src_nodes[i]);
-        printf("(%d, %d, %lf)\n", edgeTo[i].id, i, edgeTo[i].value);
         for(int j=0; j<to_delim; j++)
         {
             real_rtt_calc[i + j].id = to_nodes[j];
@@ -137,19 +136,45 @@ void update_rtt_array_values(Grafo* graph, Item* real_rtt_calc, int* src_nodes, 
 }
 
 
+void sum_dist_array(Item* src_to, Item* to_src, Grafo* graph)
+{
+    for(int i=0; i<graph->nS; i+=graph->nC)
+    {
+        for(int j=0; j<graph->nC;j++)
+        {
+            src_to[i+j].value += to_src[i + j*graph->nS].value; 
+        } 
+    }
+}
+
+
 Item* rtt_calc(Grafo* graph)
 {
     Item* real_rtt_calc = calloc(graph->nS * graph->nC, sizeof(Item));
-    update_rtt_array_values(graph, real_rtt_calc, graph->clients, graph->servidores, graph->nC, graph->nS);
+    Item* aux_rtt_calc = calloc(graph->nS * graph->nC, sizeof(Item));
     update_rtt_array_values(graph, real_rtt_calc, graph->servidores, graph->clients, graph->nS, graph->nC);
+    update_rtt_array_values(graph, aux_rtt_calc, graph->clients, graph->servidores, graph->nC, graph->nS);
+    sum_dist_array(real_rtt_calc, aux_rtt_calc, graph);
     return real_rtt_calc;
 }
+
+
+Item* rtt_aprox_calc(Grafo* graph)
+{
+    Item* real_rtt_calc = calloc(graph->nS * graph->nC, sizeof(Item));
+    Item* aux_rtt_calc = calloc(graph->nS * graph->nC, sizeof(Item));
+    update_rtt_array_values(graph, real_rtt_calc, graph->servidores, graph->clients, graph->nS, graph->nC);
+    update_rtt_array_values(graph, aux_rtt_calc, graph->clients, graph->servidores, graph->nC, graph->nS);
+    sum_dist_array(real_rtt_calc, aux_rtt_calc, graph);
+    return real_rtt_calc;
+}
+
+
 
 int main()
 {
     Grafo* graph = inicializaGrafo();
     //Item* edgeTo = dijkstraSP(graph, 0);
-    printf("Servidor fora da func %d\n", graph->servidores[0]);
     Item* real_rtt_calc = rtt_calc(graph);
     for(int i=0; i<graph->nC * graph ->nS;i++)
     {
