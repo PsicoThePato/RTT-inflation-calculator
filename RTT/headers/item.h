@@ -4,6 +4,7 @@
 typedef struct {
   int id;           // identificador do nó
   double value;     // valor associado ao nó
+  int from;
 }Item;
 
 #define id(A)          (A.id)                           // retorna identificador do nó

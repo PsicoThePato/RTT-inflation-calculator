@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../headers/linkedList.h"
 #include "../headers/error.h"
@@ -8,6 +9,7 @@
 
 void newList(List* list) 
 {
+	
 	list->head = NULL;
 	list->tail = NULL;	
 }

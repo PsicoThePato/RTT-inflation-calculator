@@ -24,6 +24,6 @@ void allocAdjList(FILE* entry, int E, List* nodeList);
 void update_rtt_array_values(Grafo* graph, Item* real_rtt_calc, int* src_nodes, int* to_nodes, int src_delim, int to_delim);
 
 
-Item* rtt_calc(Grafo* graph);
+Item* rtt_calc(Grafo* graph, int* src, int* to, int nSrc, int nTo);
 
 #endif

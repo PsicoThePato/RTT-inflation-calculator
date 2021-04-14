@@ -13,7 +13,7 @@ typedef struct listNode
 
 typedef struct 
 {
-	Node* head; 			// Pointer to list head
+	Node* head; 		// Pointer to list head
 	Node* tail;			// Pointer to list tail
 }List;
 
