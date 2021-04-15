@@ -6,7 +6,7 @@
 #include "item.h"
 
 
-Grafo* inicializaGrafo();
+Grafo* inicializaGrafo(char* path_arquivo);
 
 
 void getLineData(FILE* entry, int* dataArray, int nTokens);

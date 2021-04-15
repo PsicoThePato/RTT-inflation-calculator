@@ -9,12 +9,12 @@
 #include "../headers/linkedList.h"
 
 
-Grafo* inicializaGrafo()
+Grafo* inicializaGrafo(char* path_arquivo)
 {
     int firstLine[2]; //trocar pra malloc na função getLineData depois(?)
     int secondLine[3];
 
-    FILE* entry = fopen("in/teste.txt", "r");
+    FILE* entry = fopen(path_arquivo, "r");
     checkNullPointer(entry, "Problema na abertura do arquivo\n");
     getLineData(entry, firstLine, 2);
     getLineData(entry, secondLine, 3);
