@@ -1,5 +1,5 @@
-#ifndef _GRAPHOPERATIONS_h_
-#define _GRAPHOPERATIONS_h_
+#ifndef _GRAPHOPERATIONS_H_
+#define _GRAPHOPERATIONS_H_
 
 #include "linkedList.h"
 
@@ -18,5 +18,9 @@ typedef struct grafo
 
 void destroiGrafo(Grafo* grafo);
 
+int** allocAdjMatrix(int nV);
+
 void assertCarregueiCerto(Grafo* grafo);
+
+
 #endif
