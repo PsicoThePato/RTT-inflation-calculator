@@ -18,10 +18,10 @@ void relax(Node* edge, PQ* pq, int from, double* distTo, Item* edgeTo, int sourc
         edgeTo[to].value = distTo[to];
         if(PQ_hasX(to, pq))
         {
-            PQ_decrease_key(to, edge->weight, pq);
+            PQ_decrease_key(to, distTo[to], pq);
             return;
-        }
-        Item node = {to, edge->weight, from};
+        } 
+        Item node = {to, distTo[to], from};
         PQ_insert(node, pq);
     }
 }
@@ -30,15 +30,17 @@ void relax(Node* edge, PQ* pq, int from, double* distTo, Item* edgeTo, int sourc
 Item* dijkstraSP(Grafo* grafo, int source)
 {
     Item *edgeTo = calloc(grafo->nV, sizeof(Item));  //calloc to please valgrind-sama
-    double distTo[grafo->nV];
-    PQ* pq = PQ_init(grafo->nV);
 
+    double distTo[grafo->nV];
     for(int i=0; i<grafo->nV; i++)
     {
-        distTo[i] = FLT_MAX;
+        distTo[i] = DBL_MAX;
     }
+
     distTo[source] = 0;
     Item no_inical = {source, 0.0, source};
+
+    PQ* pq = PQ_init(grafo->nV);
     PQ_insert(no_inical, pq);
 
     while(!PQ_empty(pq))
@@ -51,7 +53,6 @@ Item* dijkstraSP(Grafo* grafo, int source)
             relax(node, pq, min_node, distTo, edgeTo, source);
             node = node->next;
         }
-
     }
     PQ_finish(pq);
     return edgeTo;
