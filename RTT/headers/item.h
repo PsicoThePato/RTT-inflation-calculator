@@ -12,4 +12,8 @@ typedef struct {
 #define more(A, B)      (value(A) > value(B))           // compara nós, por valor
 #define exch(A, B)      { Item t = A; A = B; B = t; }   // troca dois nós
 
+
+int compare_item(const void* A, const void* B);
+
+
 #endif
