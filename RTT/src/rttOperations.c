@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <float.h>
 
 #include "../headers/item.h"
 #include "../headers/graphOperations.h"
 #include "../headers/dijkstra.h"
-
 
 
 void sum_dist_array(Item* src_to, Item* to_src, int step, int outer_lim, int inner_lim)
@@ -58,7 +58,7 @@ Item* rtt_aprox_calc(Grafo* graph)
     
     int aux = 0;
     int bigArrayRef = 0;
-    double server_to_client = 999999.0;
+    double server_to_client = FLT_MAX;
     for(int i=0; i<graph->nS; i+=graph->nM)
     {
         for(int j=0; j<graph->nC; j++)
@@ -81,5 +81,16 @@ Item* rtt_aprox_calc(Grafo* graph)
     {
         printf("A distancia do node %d para o node %d eh %lf\n", end_rtt[i].from, end_rtt[i].id, end_rtt[i].value);
     }
+    free(server_monitor);
+    free(monitor_client);
     return end_rtt;
+}
+
+
+void rtt_inflation(Item* real_rtt, Item* aprox_rtt, int size)
+{
+    for(int i = 0; i < size; i++)
+    {
+        real_rtt[i].value = aprox_rtt[i].value/real_rtt[i].value;
+    }
 }

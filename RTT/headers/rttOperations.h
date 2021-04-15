@@ -12,4 +12,8 @@ void update_rtt_array_values(Grafo* graph, Item* real_rtt_calc, int* src_nodes, 
 Item* rtt_calc(Grafo* graph, int* src, int* to, int nSrc, int nTo);
 
 Item* rtt_aprox_calc(Grafo* graph);
+
+void rtt_inflation(Item* real_rtt, Item* aprox_rtt, int size);
+
+
 #endif
