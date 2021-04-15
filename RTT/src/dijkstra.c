@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <float.h>
 
 #include "../headers/dijkstra.h"
 #include "../headers/item.h"
@@ -33,7 +34,7 @@ Item* dijkstraSP(Grafo* grafo, int source)
 
     for(int i=0; i<grafo->nV; i++)
     {
-        distTo[i] = 99999.0;
+        distTo[i] = FLT_MAX;
     }
     distTo[source] = 0;
     Item no_inical = {source, 0.0};
