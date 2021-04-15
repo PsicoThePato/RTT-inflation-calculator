@@ -7,20 +7,21 @@
 #include "../headers/PQ.h"
 
 
-void relax(Node* edge, PQ* pq, int from, double* distTo, Item* edgeTo)
+void relax(Node* edge, PQ* pq, int from, double* distTo, Item* edgeTo, int source)
 {
     int to = edge->nodeLabel;
     if(distTo[to] > distTo[from] + edge->weight)
     {
         distTo[to] = distTo[from] + edge->weight;
-        edgeTo[to].id = from;
+        edgeTo[to].id = to;
+        edgeTo[to].from = source;
         edgeTo[to].value = distTo[to];
         if(PQ_hasX(to, pq))
         {
             PQ_decrease_key(to, edge->weight, pq);
             return;
         }
-        Item node = {to, edge->weight};
+        Item node = {to, edge->weight, from};
         PQ_insert(node, pq);
     }
 }
@@ -37,7 +38,7 @@ Item* dijkstraSP(Grafo* grafo, int source)
         distTo[i] = FLT_MAX;
     }
     distTo[source] = 0;
-    Item no_inical = {source, 0.0};
+    Item no_inical = {source, 0.0, source};
     PQ_insert(no_inical, pq);
 
     while(!PQ_empty(pq))
@@ -47,7 +48,7 @@ Item* dijkstraSP(Grafo* grafo, int source)
         Node* node = grafo->adjList[min_node].head;
         while(node)
         {
-            relax(node, pq, min_node, distTo, edgeTo);
+            relax(node, pq, min_node, distTo, edgeTo, source);
             node = node->next;
         }
 
