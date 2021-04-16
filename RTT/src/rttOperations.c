@@ -10,8 +10,6 @@
 void sum_dist_array(Item* src_to, Item* to_src, int step, int outer_lim, int inner_lim)
 
 {
-    //[s0t0 s0t1 s0t2 s1t0]
-    //[[t0s0 t0s1 t0s2] [t1s0 t1s1 t1s2]]
     int arrayIdx = 0;
     for(int i=0; i<outer_lim; i++)
     {
@@ -57,7 +55,6 @@ Item* rtt_calc(Grafo* graph, int* src, int* to, int nSrc, int nTo)
 
 Item* rtt_aprox_calc(Grafo* graph)
 {
-    printf("APROX RTT\n");
     Item* server_monitor_pairs;
     Item* monitor_client_pairs;
     Item* end_rtt = calloc(graph->nS * graph->nC, sizeof(Item));
