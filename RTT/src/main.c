@@ -21,9 +21,9 @@ int main(int argc, char** argv)
     Item* real_rtt_calc = rtt_calc(graph, graph->servidores, graph->clients, graph->nS, graph->nC);
     Item* aprox_rtt = rtt_aprox_calc(graph);
     rtt_inflation(real_rtt_calc, aprox_rtt, graph->nC * graph->nS);
-
+    free(aprox_rtt);
     escreveArquivo(real_rtt_calc, graph->nS * graph->nC, arqSaida);
+    
     destroiGrafo(graph);
     free(real_rtt_calc);
-    free(aprox_rtt);
 }
