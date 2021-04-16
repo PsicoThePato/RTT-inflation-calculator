@@ -69,7 +69,7 @@ Item* rtt_aprox_calc(Grafo* graph)
     {
         for(int j = 0; j < graph->nC; j++)
         {
-            double best_s2c_dist = FLT_MAX;
+            double best_s2c_dist = DBL_MAX;
             for(int k = 0; k < graph->nM; k++)
             {
                 int sm_idx = i * graph->nM + k;
