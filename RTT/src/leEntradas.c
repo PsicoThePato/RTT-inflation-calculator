@@ -9,12 +9,12 @@
 #include "../headers/linkedList.h"
 
 
-Grafo* inicializaGrafo()
+Grafo* inicializaGrafo(char* path_arquivo)
 {
     int firstLine[2]; //trocar pra malloc na função getLineData depois(?)
     int secondLine[3];
 
-    FILE* entry = fopen("in/teste.txt", "r");
+    FILE* entry = fopen(path_arquivo, "r");
     checkNullPointer(entry, "Problema na abertura do arquivo\n");
     getLineData(entry, firstLine, 2);
     getLineData(entry, secondLine, 3);
@@ -73,20 +73,6 @@ void getLineData(FILE* entry, int *dataArray, int nTokens)
 }
 
 
-int** allocAdjMatrix(int nV)
-{
-    int **adjacency_matrix = malloc(sizeof(int *) * nV);
-    checkNullPointer(adjacency_matrix, "Problema na alocação de matriz de adjacências\n");
-    for(int i = 0; i < nV; i++)
-    {
-        adjacency_matrix[i] = calloc(nV, sizeof(int));
-        checkNullPointer(adjacency_matrix[i], "Problema na alocação de uma linha da matriz de adj\n");
-    }
-
-    return adjacency_matrix;
-}
-
-
 void getnNodes(FILE* entry, int *servitorsArray, int nS)
 {
     char* line = NULL;
@@ -118,69 +104,4 @@ void allocAdjList(FILE* entry, int E, List* nodeList)
         fscanf(entry, "%d %d %lf", &nodeA, &nodeB, &weight);
         addTail(&nodeList[nodeA], weight, nodeB);
     }
-}
-
-
-void update_rtt_array_values(Grafo* graph, Item* real_rtt_calc, int* src_nodes, int* to_nodes, int src_delim, int to_delim)
-{
-    for(int i = 0; i < src_delim; i++)
-    {
-        Item* edgeTo = dijkstraSP(graph, src_nodes[i]);
-        for(int j=0; j<to_delim; j++)
-        {
-            real_rtt_calc[i + j].id = to_nodes[j];
-            real_rtt_calc[i + j].value += edgeTo[to_nodes[j]].value;
-        }
-        free(edgeTo);
-    }
-}
-
-
-void sum_dist_array(Item* src_to, Item* to_src, Grafo* graph)
-{
-    for(int i=0; i<graph->nS; i+=graph->nC)
-    {
-        for(int j=0; j<graph->nC;j++)
-        {
-            src_to[i+j].value += to_src[i + j*graph->nS].value; 
-        } 
-    }
-}
-
-
-Item* rtt_calc(Grafo* graph)
-{
-    Item* real_rtt_calc = calloc(graph->nS * graph->nC, sizeof(Item));
-    Item* aux_rtt_calc = calloc(graph->nS * graph->nC, sizeof(Item));
-    update_rtt_array_values(graph, real_rtt_calc, graph->servidores, graph->clients, graph->nS, graph->nC);
-    update_rtt_array_values(graph, aux_rtt_calc, graph->clients, graph->servidores, graph->nC, graph->nS);
-    sum_dist_array(real_rtt_calc, aux_rtt_calc, graph);
-    return real_rtt_calc;
-}
-
-
-Item* rtt_aprox_calc(Grafo* graph)
-{
-    Item* real_rtt_calc = calloc(graph->nS * graph->nC, sizeof(Item));
-    Item* aux_rtt_calc = calloc(graph->nS * graph->nC, sizeof(Item));
-    update_rtt_array_values(graph, real_rtt_calc, graph->servidores, graph->clients, graph->nS, graph->nC);
-    update_rtt_array_values(graph, aux_rtt_calc, graph->clients, graph->servidores, graph->nC, graph->nS);
-    sum_dist_array(real_rtt_calc, aux_rtt_calc, graph);
-    return real_rtt_calc;
-}
-
-
-
-int main()
-{
-    Grafo* graph = inicializaGrafo();
-    //Item* edgeTo = dijkstraSP(graph, 0);
-    Item* real_rtt_calc = rtt_calc(graph);
-    for(int i=0; i<graph->nC * graph ->nS;i++)
-    {
-        printf("A distancia para o node %d eh %lf\n", real_rtt_calc[i].id, real_rtt_calc[i].value);
-    }
-    free(real_rtt_calc);
-    //free(edgeTo);
-    destroiGrafo(graph);
 }

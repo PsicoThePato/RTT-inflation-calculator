@@ -5,6 +5,8 @@
 #include "../headers/graphOperations.h"
 #include "../headers/linkedList.h"
 #include "../headers/leEntradas.h"
+#include "../headers/error.h"
+
 
 void destroiGrafo(Grafo* grafo)
 {
@@ -18,6 +20,21 @@ void destroiGrafo(Grafo* grafo)
     free(grafo->adjList);
     free(grafo);
 }
+
+
+int** allocAdjMatrix(int nV)
+{
+    int **adjacency_matrix = malloc(sizeof(int *) * nV);
+    checkNullPointer(adjacency_matrix, "Problema na alocação de matriz de adjacências\n");
+    for(int i = 0; i < nV; i++)
+    {
+        adjacency_matrix[i] = calloc(nV, sizeof(int));
+        checkNullPointer(adjacency_matrix[i], "Problema na alocação de uma linha da matriz de adj\n");
+    }
+
+    return adjacency_matrix;
+}
+
 
 void assertCarregueiCerto(Grafo* grafo)
 {
